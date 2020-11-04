@@ -152,3 +152,28 @@ func (t *Follow) List(uName string) ([]model.Follow, error) {
 	log.Println("Completed Follow List")
 	return out, nil
 }
+
+func (t *Follow) Count(uName string) (int, int, error) {
+	log.Println("Starting Follow Count", uName)
+
+	cFlg, err := t.collection().CountDocuments(context.Background(),
+		bson.M{
+			"username": uName,
+		},
+	)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	cFlw, err := t.collection().CountDocuments(context.Background(),
+		bson.M{
+			"profile": uName,
+		},
+	)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	log.Println("Completed Follow Count")
+	return int(cFlg), int(cFlw), nil
+}

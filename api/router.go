@@ -6,6 +6,7 @@ import (
 	"github.com/ark1790/alpha/repo"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/cors"
 	"github.com/sirupsen/logrus"
 )
 
@@ -41,8 +42,17 @@ func register(router *Router) {
 
 	router.Use(middleware.RequestLogger(&middleware.DefaultLogFormatter{Logger: logger}))
 	router.Use(recoverer)
-	router.Use(enableCORS)
-
+	// router.Use(enableCORS)
+	router.Use(cors.Handler(cors.Options{
+		// AllowedOrigins: []string{"http://localhost:8080"}, // Use this to allow specific origin hosts
+		AllowedOrigins: []string{"*"},
+		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	}))
 	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		err := newAPIError("Not Found", errURINotFound, nil)
 		panic(err)
@@ -70,6 +80,7 @@ func userHandlers(rt *Router) http.Handler {
 	h.Group(func(r chi.Router) {
 		r.Post("/", rt.CreateUser)
 		r.Post("/login", rt.Login)
+		r.With(gatekeeper).Get("/me", rt.GetMe)
 	})
 
 	return h

@@ -38,6 +38,10 @@ func (rt *Router) ToggleFollow(w http.ResponseWriter, r *http.Request) {
 		panic(newAPIError("Invalid data", errInvalidData, err))
 	}
 
+	if usr == body.Profile {
+		panic(newAPIError("Invalid data", errInvalidData, nil))
+	}
+
 	flw := &model.Follow{
 		Username: usr,
 		Profile:  body.Profile,

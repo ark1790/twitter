@@ -18,11 +18,11 @@ func setupResponse(w *http.ResponseWriter, req *http.Request) {
 
 func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		setupResponse(&w, r)
 		if (*r).Method == "OPTIONS" {
 			return
 		}
 	})
+
 	// process the request...
 }
 
