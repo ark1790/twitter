@@ -10,6 +10,7 @@ import (
 )
 
 type createUserPld struct {
+	Name     string `json:"name"`
 	Username string `json:"username"`
 	Private  bool   `json:"private"`
 }
@@ -18,7 +19,9 @@ func (c *createUserPld) validate() *validationError {
 	c.Username = strings.TrimSpace(c.Username)
 
 	errV := validationError{}
-
+	if c.Name == "" {
+		errV.add("name", "is required")
+	}
 	if c.Username == "" {
 		errV.add("username", "is required")
 	}
@@ -42,6 +45,7 @@ func (rt *Router) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := &model.User{
+		Name:     body.Name,
 		Username: body.Username,
 		Private:  body.Private,
 	}
