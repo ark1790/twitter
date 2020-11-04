@@ -41,6 +41,8 @@ func register(router *Router) {
 
 	router.Use(middleware.RequestLogger(&middleware.DefaultLogFormatter{Logger: logger}))
 	router.Use(recoverer)
+	router.Use(enableCORS)
+
 	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		err := newAPIError("Not Found", errURINotFound, nil)
 		panic(err)
