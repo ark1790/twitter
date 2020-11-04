@@ -80,6 +80,7 @@ func userHandlers(rt *Router) http.Handler {
 	h.Group(func(r chi.Router) {
 		r.Post("/", rt.CreateUser)
 		r.Post("/login", rt.Login)
+		r.Get("/{username}", rt.GetProfile)
 		r.With(gatekeeper).Get("/me", rt.GetMe)
 	})
 

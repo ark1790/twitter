@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-chi/chi"
+
 	"github.com/ark1790/alpha/errors"
 	"github.com/ark1790/alpha/model"
 )
@@ -130,6 +132,34 @@ func (rt *Router) Login(w http.ResponseWriter, r *http.Request) {
 
 func (rt *Router) GetMe(w http.ResponseWriter, r *http.Request) {
 	uName := getAuthUser(r)
+
+	usr, err := rt.userRepo.Fetch(uName)
+	if err != nil {
+		panic(newAPIError("DB failed", errInternalServer, err))
+	}
+	if usr == nil {
+		panic(newAPIError("User not found", errUserNotFound, nil))
+	}
+
+	cFlg, cFlw, err := rt.followRepo.Count(uName)
+	if err != nil {
+		panic(newAPIError("DB failed", errInternalServer, err))
+	}
+	resp := response{
+		code: http.StatusOK,
+		Data: object{
+			"user":      usr,
+			"following": cFlg,
+			"follower":  cFlw,
+		},
+	}
+
+	resp.serveJSON(w)
+
+}
+
+func (rt *Router) GetProfile(w http.ResponseWriter, r *http.Request) {
+	uName := strings.TrimSpace(chi.URLParam(r, "username"))
 
 	usr, err := rt.userRepo.Fetch(uName)
 	if err != nil {
