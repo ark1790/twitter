@@ -1,0 +1,136 @@
+{
+  "campaigns": [
+    {
+      "id": "1",
+      "title": "The BAP Campaign",
+      "code": "BAPREBAP50",
+      "partner": "10101",
+      "burn_sharing": 20,
+      "budget": 1000000,
+      "start_date": "2006-01-02",
+      "end_date": "2006-01-10",
+      "ties": [
+        "121212"
+      ],
+      "promos": [
+        {
+          "id": "abc123",
+          "name": "Adam Jahr"
+        },
+        {
+          "id": "def456",
+          "name": "Gregg Pollack"
+        },
+        {
+          "id": "ghi789",
+          "name": "Beth Swanson"
+        },
+        {
+          "id": "jkl101",
+          "name": "Mary Gordon"
+        }
+      ],
+      "created_at": 1555826211,
+      "updated_at": 1555826211
+    },
+    {
+      "id": "2",
+      "title": "The KHAP Campaign",
+      "code": "KHAPEKHAP60",
+      "partner": "10101",
+      "burn_sharing": 20,
+      "budget": 1000000,
+      "start_date": "2006-01-02",
+      "end_date": "2006-01-10",
+      "ties": [
+        "121212"
+      ],
+      "promos": [
+        {
+          "id": "abc123",
+          "name": "Adam Jahr"
+        },
+        {
+          "id": "def456",
+          "name": "Gregg Pollack"
+        },
+        {
+          "id": "ghi789",
+          "name": "Beth Swanson"
+        },
+        {
+          "id": "jkl101",
+          "name": "Mary Gordon"
+        }
+      ],
+      "created_at": 1555826211,
+      "updated_at": 1555826211
+    },
+    {
+      "id": "3",
+      "title": "The JHAP Campaign",
+      "code": "ENDGAME80",
+      "partner": "10101",
+      "burn_sharing": 20,
+      "budget": 1000000,
+      "start_date": "2006-01-02",
+      "end_date": "2006-01-10",
+      "ties": [
+        "121212"
+      ],
+      "promos": [
+        {
+          "id": "abc123",
+          "name": "Adam Jahr"
+        },
+        {
+          "id": "def456",
+          "name": "Gregg Pollack"
+        },
+        {
+          "id": "ghi789",
+          "name": "Beth Swanson"
+        },
+        {
+          "id": "jkl101",
+          "name": "Mary Gordon"
+        }
+      ],
+      "created_at": 1555826211,
+      "updated_at": 1555826211
+    },
+    {
+      "id": "4",
+      "title": "The GOT Campaign",
+      "code": "GOT75",
+      "partner": "10101",
+      "burn_sharing": 20,
+      "budget": 1000000,
+      "start_date": "2006-01-02",
+      "end_date": "2006-01-10",
+      "ties": [
+        "121212"
+      ],
+      "promos": [
+        {
+          "id": "abc123",
+          "name": "Adam Jahr"
+        },
+        {
+          "id": "def456",
+          "name": "Gregg Pollack"
+        },
+        {
+          "id": "ghi789",
+          "name": "Beth Swanson"
+        },
+        {
+          "id": "jkl101",
+          "name": "Mary Gordon"
+        }
+      ],
+      "created_at": 1555826211,
+      "updated_at": 1555826211
+    }
+  ]
+}

@@ -70,16 +70,21 @@ func (t *Feed) Create(twt *model.Feed) error {
 	return nil
 }
 
-func (t *Feed) List(uName string) ([]model.Feed, error) {
+func (t *Feed) List(uName string, tpe string) ([]model.Feed, error) {
 	log.Println("Starting Feed List", uName)
-	cursor, err := t.collection().Find(context.Background(),
-		bson.M{
-			"for": uName,
-			"createdAt": bson.M{
-				"$gt": time.Now().AddDate(0, 0, -1),
-			},
+	qry := bson.M{
+		"createdAt": bson.M{
+			"$gt": time.Now().AddDate(0, 0, -1),
 		},
-	)
+	}
+
+	if tpe == "home" {
+		qry["for"] = uName
+	} else {
+		qry["username"] = uName
+	}
+
+	cursor, err := t.collection().Find(context.Background(), qry)
 
 	if err != nil {
 		log.Println("Completed Feed List", err)
