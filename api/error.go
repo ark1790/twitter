@@ -42,9 +42,12 @@ var (
 
 	errPasswordMismatched = &errorCode{Code: "403001", Status: http.StatusForbidden}
 
-	errURINotFound = &errorCode{Code: "404001", Status: http.StatusNotFound}
+	errURINotFound  = &errorCode{Code: "404001", Status: http.StatusNotFound}
+	errUserNotFound = &errorCode{Code: "404002", Status: http.StatusNotFound}
 
 	errInvalidMethod = &errorCode{Code: "405001", Status: http.StatusMethodNotAllowed}
+
+	errEntityNotUnique = &errorCode{Code: "409001", Status: http.StatusConflict}
 
 	errInvalidData = &errorCode{Code: "422001", Status: http.StatusUnprocessableEntity}
 

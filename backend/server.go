@@ -10,25 +10,30 @@ import (
 	"time"
 
 	"github.com/ark1790/alpha/api"
+	"github.com/ark1790/alpha/repo"
 	"github.com/go-chi/chi"
 	"github.com/spf13/viper"
 )
 
 // Server ...
 type Server struct {
+	userRepo repo.User
 }
 
 // NewServer ...
-func NewServer() *Server {
-	return &Server{}
+func NewServer(ur repo.User) *Server {
+	return &Server{
+		userRepo: ur,
+	}
 }
 
 // Serve ...
 func (s *Server) Serve() {
+
 	portStr := viper.GetString("PORT")
 
 	r := chi.NewMux()
-	r.Mount("/api/v1", api.NewRouter())
+	r.Mount("/api/v1", api.NewRouter(s.userRepo))
 
 	srvr := &http.Server{
 		ReadTimeout:  viper.GetDuration("READ_TIMEOUT"),

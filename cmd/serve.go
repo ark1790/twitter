@@ -1,12 +1,18 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"net"
+	"time"
 
 	"github.com/ark1790/alpha/backend"
+	"github.com/ark1790/alpha/model"
+	"github.com/ark1790/alpha/repo/mongo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var serveCmd = &cobra.Command{
@@ -35,5 +41,23 @@ func init() {
 }
 
 func serve(cmd *cobra.Command, args []string) {
-	backend.NewServer().Serve()
+	db, err := mongo.NewClient(options.Client().ApplyURI(viper.GetString("MONGO_URI")))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	if err := db.Connect(ctx); err != nil {
+		panic(err)
+	}
+
+	appDB := db.Database(viper.GetString("DB_NAME"))
+
+	users := mongorepo.NewUser(appDB, "users")
+	if err := users.EnsureIndices(&model.User{}); err != nil {
+		panic(err)
+	}
+
+	backend.NewServer(users).Serve()
 }
