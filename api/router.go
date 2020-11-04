@@ -14,14 +14,18 @@ type Router struct {
 	*chi.Mux
 	userRepo   repo.User
 	followRepo repo.Follow
+	tweetRepo  repo.Tweet
+	feedRepo   repo.Feed
 }
 
 // NewRouter ...
-func NewRouter(ur repo.User, fr repo.Follow) *Router {
+func NewRouter(ur repo.User, fr repo.Follow, tr repo.Tweet, fdr repo.Feed) *Router {
 	router := &Router{
 		Mux:        chi.NewRouter(),
 		userRepo:   ur,
 		followRepo: fr,
+		tweetRepo:  tr,
+		feedRepo:   fdr,
 	}
 	register(router)
 	return router
@@ -54,6 +58,8 @@ func register(router *Router) {
 	router.Route("/", func(r chi.Router) {
 		r.Mount("/users", userHandlers(router))
 		r.Mount("/follows", followHandlers(router))
+		r.Mount("/tweets", tweetHandlers(router))
+		r.Mount("/feeds", feedHandlers(router))
 	})
 }
 
@@ -72,6 +78,25 @@ func followHandlers(rt *Router) http.Handler {
 	h.Group(func(r chi.Router) {
 		r.Use(gatekeeper)
 		r.Post("/", rt.ToggleFollow)
+	})
+
+	return h
+}
+func tweetHandlers(rt *Router) http.Handler {
+	h := chi.NewRouter()
+	h.Group(func(r chi.Router) {
+		r.Use(gatekeeper)
+		r.Post("/", rt.PostTweet)
+	})
+
+	return h
+}
+
+func feedHandlers(rt *Router) http.Handler {
+	h := chi.NewRouter()
+	h.Group(func(r chi.Router) {
+		r.Use(gatekeeper)
+		r.Get("/", rt.GetFeeds)
 	})
 
 	return h

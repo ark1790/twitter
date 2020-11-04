@@ -19,13 +19,17 @@ import (
 type Server struct {
 	userRepo   repo.User
 	followRepo repo.Follow
+	tweetRepo  repo.Tweet
+	feedRepo   repo.Feed
 }
 
 // NewServer ...
-func NewServer(ur repo.User, fl repo.Follow) *Server {
+func NewServer(ur repo.User, fl repo.Follow, tr repo.Tweet, fdr repo.Feed) *Server {
 	return &Server{
 		userRepo:   ur,
 		followRepo: fl,
+		tweetRepo:  tr,
+		feedRepo:   fdr,
 	}
 }
 
@@ -35,7 +39,7 @@ func (s *Server) Serve() {
 	portStr := viper.GetString("PORT")
 
 	r := chi.NewMux()
-	r.Mount("/api/v1", api.NewRouter(s.userRepo, s.followRepo))
+	r.Mount("/api/v1", api.NewRouter(s.userRepo, s.followRepo, s.tweetRepo, s.feedRepo))
 
 	srvr := &http.Server{
 		ReadTimeout:  viper.GetDuration("READ_TIMEOUT"),

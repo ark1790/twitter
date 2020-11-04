@@ -64,5 +64,15 @@ func serve(cmd *cobra.Command, args []string) {
 		panic(err)
 	}
 
-	backend.NewServer(users, fls).Serve()
+	twts := mongorepo.NewTweet(appDB, "tweets")
+	if err := twts.EnsureIndices(&model.Tweet{}); err != nil {
+		panic(err)
+	}
+
+	fds := mongorepo.NewFeed(appDB, "feeds")
+	if err := fds.EnsureIndices(&model.Feed{}); err != nil {
+		panic(err)
+	}
+
+	backend.NewServer(users, fls, twts, fds).Serve()
 }

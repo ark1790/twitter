@@ -125,3 +125,30 @@ func (f *Follow) Toggle(fl *model.Follow) error {
 
 	return f.Delete(flw.ID.Hex())
 }
+
+func (t *Follow) List(uName string) ([]model.Follow, error) {
+	log.Println("Starting Follow List", uName)
+	cursor, err := t.collection().Find(context.Background(),
+		bson.M{
+			"username": uName,
+		},
+	)
+	if err != nil {
+		log.Println("Completed Follow List", err)
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	twts := []bsonFollow{}
+	if err := cursor.All(context.Background(), &twts); err != nil {
+		log.Println("Completed Follow List", err)
+		return nil, err
+	}
+
+	out := make([]model.Follow, len(twts))
+	for i, twt := range twts {
+		out[i] = *twt.toModel()
+	}
+	log.Println("Completed Follow List")
+	return out, nil
+}
