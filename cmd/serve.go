@@ -59,5 +59,10 @@ func serve(cmd *cobra.Command, args []string) {
 		panic(err)
 	}
 
-	backend.NewServer(users).Serve()
+	fls := mongorepo.NewFollow(appDB, "follows")
+	if err := fls.EnsureIndices(&model.Follow{}); err != nil {
+		panic(err)
+	}
+
+	backend.NewServer(users, fls).Serve()
 }
